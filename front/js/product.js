@@ -21,9 +21,9 @@ function getId() {
     const url = new URL (str);
     console.log(url);
 
-    const idElement = url.searchParams.get("id");
-    console.log(idElement);
-    return idElement;
+    const id = url.searchParams.get("id");
+    console.log(id);
+    return id;
 }
 
 async function displayProduct(product) { 
@@ -45,6 +45,61 @@ async function displayProduct(product) {
     //Description
     const descriptionElement = document.getElementById("description");
     descriptionElement.innerText = product.description;
+
+    //Options de couleurs
+    const sectionColors = document.getElementById("colors");
+
+    for (let i=0; i < product.colors.length; i++) {
+   
+    const colorElement = document.createElement("option")
+    colorElement.innerText = product.colors[i];
+
+    sectionColors.appendChild(colorElement);
+    }
 }
 
 console.log("chargement du produit terminé");
+
+const addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener ("click", function() {
+
+        let cartObject = {
+        idProduct:`${getId()}`,
+        quantityProduct: `${getQuantity()}`,
+        colorProduct: `${getColor()}`
+        }
+
+console.log(cartObject);
+
+let cart = window.localStorage.getItem("cart");
+console.log(cart);
+
+if (cart !== null) {
+    let cartArray = JSON.parse(cart);
+
+    for (let i=0; i < cartArray.length; i++) {
+        if (cartArray[i].idProduct === cartObject.idProduct && cartArray[i].colorProduct === cartObject.colorProduct) {
+            cartObject.quantityProduct += cartArray[i].quantity;
+        } 
+    };
+}
+
+cartArray.push(cartObject);
+console.log(cartArray);
+
+cartArray = JSON.stringify (cart);
+window.localStorage.setItem ("cart", cartArray);
+
+})
+
+function getQuantity() {
+    const quantityElement = document.getElementById("quantity"); //PEUT-ON METTRE LEs 2 LIGNES EN UNE SEULE?
+    const quantity = quantityElement.value;
+    return quantity;
+}
+
+function getColor() {
+    const colorElement = document.getElementById("colors");
+    const color = colorElement.options[colorElement.selectedIndex].text;
+    return color;
+}
