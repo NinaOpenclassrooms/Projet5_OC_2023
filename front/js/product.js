@@ -15,6 +15,7 @@ async function getProduct() {
     }
 }
 getProduct()
+addToCart()
 
 function getId() { 
     const str = window.location.href;
@@ -60,41 +61,60 @@ async function displayProduct(product) {
 
 console.log("chargement du produit terminé");
 
-const addToCartBtn = document.getElementById("addToCart");
-addToCartBtn.addEventListener ("click", function() {
 
+
+function addToCart () {
+
+    const addToCartBtn = document.getElementById("addToCart");
+    addToCartBtn.addEventListener ("click", function() {
+        
         let cartObject = {
-        idProduct:`${getId()}`,
-        quantityProduct: `${getQuantity()}`,
-        colorProduct: `${getColor()}`
+            idProduct:`${getId()}`,
+            quantityProduct: `${getQuantity()}`,
+            colorProduct: `${getColor()}`
         };
 
-console.log(cartObject);
+        console.log(cartObject);
 
-let cartArray = [{}];
+        let cartArray = [{ //TEST
+            idProduct:"",
+            quantityProduct:0,
+            colorProduct:"",
+        },
+        {
+            idProduct:"",
+            quantityProduct:0,
+            colorProduct:"",
+        },{
+            idProduct:"",
+            quantityProduct:0,
+            colorProduct:"",
+        }];
 
-let cart = window.localStorage.getItem("cart");
+        let cart = window.localStorage.getItem("cart");
+        cartArray = JSON.parse(cart);
+        console.log(cartArray);
 
-if (cart !== null) {
-    
+        if (cart !== null) {
 
-    for (let i=0; i < cartArray.length; i++) {
-        if (cartArray[i].idProduct === cartObject.idProduct && cartArray[i].colorProduct === cartObject.colorProduct) {
-            cartObject.quantityProduct += cartArray[i].quantity;
+            for (let i=0; i < cartArray.length; i++) {
+                if (cartArray[i].idProduct === cartObject.idProduct && cartArray[i].colorProduct === cartObject.colorProduct) {
+                    console.log(cartArray[i].quantityProduct);
+                    cartObject.quantityProduct += cartArray[i].quantityProduct; // A MODIFIER CAR NE FAIT PAS LA SOMME
+                }
+            };
         } 
-    };
+
+        cartArray.push(cartObject); // PROBLEME CARTARRAY VIDE??? METTRE PLUTOT UNSHIFT POUR QUE LE NOUVEAU PRDUIT SE PLACE EN HAUT
+        console.log(cartArray);
+
+        const cartJSON =JSON.stringify(cartArray);
+        window.localStorage.setItem ("cart", cartJSON);
+    });
 }
 
-cartArray.push(cartObject);
-console.log(cartArray);
-
-myJSON = JSON.stringify (cart);
-window.localStorage.setItem ("cart", myJSON);
-
-})
-
 function getQuantity() {
-    const quantityElement = document.getElementById("quantity"); //PEUT-ON METTRE LEs 2 LIGNES EN UNE SEULE?
+    const quantityElement = document.getElementById("quantity");
     const quantity = quantityElement.value;
     return quantity;
 }
