@@ -67,15 +67,16 @@ addToCartBtn.addEventListener ("click", function() {
         idProduct:`${getId()}`,
         quantityProduct: `${getQuantity()}`,
         colorProduct: `${getColor()}`
-        }
+        };
 
 console.log(cartObject);
 
+let cartArray = [{}];
+
 let cart = window.localStorage.getItem("cart");
-console.log(cart);
 
 if (cart !== null) {
-    let cartArray = JSON.parse(cart);
+    
 
     for (let i=0; i < cartArray.length; i++) {
         if (cartArray[i].idProduct === cartObject.idProduct && cartArray[i].colorProduct === cartObject.colorProduct) {
@@ -87,8 +88,8 @@ if (cart !== null) {
 cartArray.push(cartObject);
 console.log(cartArray);
 
-cartArray = JSON.stringify (cart);
-window.localStorage.setItem ("cart", cartArray);
+myJSON = JSON.stringify (cart);
+window.localStorage.setItem ("cart", myJSON);
 
 })
 
