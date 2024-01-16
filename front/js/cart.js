@@ -1,13 +1,9 @@
 //Fonction pour récupérer les éléments dans le localStorage
-//let cart = window.localStorage.getItem("cart");
-//cartArray = JSON.parse(cart);
-//console.log(cartArray);
-let cartArray = [{
-    idProduct: "107",
-    quantityProduct: 1,
-    colorProduct: "red"
-    }];
-console.log(cartArray);
+let cart = localStorage.getItem("cart");
+if (cartArray) {
+    cartArray = JSON.parse(cartArray);
+    console.log(cartArray);
+}
 
 async function getName() {
     try {
@@ -43,9 +39,7 @@ async function getPrice() {
 
 function displayProduct(product) { 
      
-    for (let i = 0; i < cartArray.length; i++) { // BOUCLE OU for (product[i]? of cartArray)?
-
-    
+    for (product of cartArray) { 
         //Cart
         const sectionCart = document.getElementById("cart__items");
 

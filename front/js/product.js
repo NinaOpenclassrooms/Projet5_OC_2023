@@ -26,8 +26,11 @@ function getId() {
     return id;
 }
 
-async function displayProduct(product) { 
-     
+async function displayProduct(product) {
+    //Nom dans title
+    const nameTitle = document.querySelector("title");
+    nameTitle.innerText = product.name;
+
     //Logo
     const sectionLogo = document.querySelector(".item__img");
     const imageElement = document.createElement("img");
@@ -84,7 +87,7 @@ function addToCart() {
         for (product of cartArray) {
             if (product.idProduct === cartObject.idProduct && product.colorProduct === cartObject.colorProduct) {
                 findProduct = true;
-                product.quantityProduct += parseInt(cartObject.quantityProduct);  //A SIMPLIFIER?
+                product.quantityProduct += parseInt(cartObject.quantityProduct);  //A SIMPLIFIER? VERIFIER POUR LA DEUXIEME ITERATION
                 product.quantityProduct = parseInt(product.quantityProduct);
                 console.log(product.quantityProduct);
             }
@@ -104,12 +107,28 @@ function addToCart() {
 
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
-    const quantity = quantityElement.value;
-    return parseInt(quantity);
+    const quantity = parseInt(quantityElement.value);
+    verifyQuantity (quantity);
+    return quantity;
 }
 
 function getColor() {
     const colorElement = document.getElementById("colors");
     const color = colorElement.value;
+    verifyColor(color);
     return color;
+}
+
+function verifyQuantity(quantity) {
+    if (quantity<1 || quantity>100 ) {
+        console.log("Erreur quantité");
+        alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
+    }
+}
+
+function verifyColor (color) {
+    if (color==="") {
+        console.log("Erreur couleur");
+        alert("Choisissez une couleur.");
+    }
 }
