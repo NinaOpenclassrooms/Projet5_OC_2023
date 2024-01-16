@@ -15,7 +15,6 @@ async function getProduct() {
     }
 }
 getProduct()
-addToCart()
 
 function getId() { 
     const str = window.location.href;
@@ -50,77 +49,67 @@ async function displayProduct(product) {
     //Options de couleurs
     const sectionColors = document.getElementById("colors");
 
-    for (let i=0; i < product.colors.length; i++) {
+    for (color of product.colors) {
    
-    const colorElement = document.createElement("option")
-    colorElement.innerText = product.colors[i];
+    const colorElement = document.createElement("option");
+    colorElement.value = color;
+    colorElement.innerText = color;
 
     sectionColors.appendChild(colorElement);
     }
+
+    console.log("chargement du produit terminé");
 }
 
-console.log("chargement du produit terminé");
+
+const addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener ("click", addToCart)
 
 
+function addToCart() {
 
-function addToCart () {
+    let cartObject = {
+        idProduct:`${getId()}`,
+        quantityProduct: `${getQuantity()}`,
+        colorProduct: `${getColor()}`
+    };
 
-    const addToCartBtn = document.getElementById("addToCart");
-    addToCartBtn.addEventListener ("click", function() {
+    console.log(cartObject);
+ 
+    let cartArray = localStorage.getItem("cart");
+    if (cartArray) {
+        cartArray = JSON.parse(cartArray);
+        let findProduct = false;
         
-        let cartObject = {
-            idProduct:`${getId()}`,
-            quantityProduct: `${getQuantity()}`,
-            colorProduct: `${getColor()}`
+        for (product of cartArray) {
+            if (product.idProduct === cartObject.idProduct && product.colorProduct === cartObject.colorProduct) {
+                findProduct = true;
+                product.quantityProduct += parseInt(cartObject.quantityProduct);  //A SIMPLIFIER?
+                product.quantityProduct = parseInt(product.quantityProduct);
+                console.log(product.quantityProduct);
+            }
         };
+        
+        if (findProduct === false) {
+            cartArray.push (cartObject);  
+        }
+    } else {
+        cartArray = [];
+        cartArray.push (cartObject);
 
-        console.log(cartObject);
+    }
 
-        let cartArray = [{ //TEST
-            idProduct:"",
-            quantityProduct:0,
-            colorProduct:"",
-        },
-        {
-            idProduct:"",
-            quantityProduct:0,
-            colorProduct:"",
-        },{
-            idProduct:"",
-            quantityProduct:0,
-            colorProduct:"",
-        }];
-
-        let cart = window.localStorage.getItem("cart");
-        cartArray = JSON.parse(cart);
-        console.log(cartArray);
-
-        if (cart !== null) {
-
-            for (let i=0; i < cartArray.length; i++) {
-                if (cartArray[i].idProduct === cartObject.idProduct && cartArray[i].colorProduct === cartObject.colorProduct) {
-                    console.log(cartArray[i].quantityProduct);
-                    cartObject.quantityProduct += cartArray[i].quantityProduct; // A MODIFIER CAR NE FAIT PAS LA SOMME
-                }
-            };
-        } 
-
-        cartArray.push(cartObject); // PROBLEME CARTARRAY VIDE??? METTRE PLUTOT UNSHIFT POUR QUE LE NOUVEAU PRDUIT SE PLACE EN HAUT
-        console.log(cartArray);
-
-        const cartJSON =JSON.stringify(cartArray);
-        window.localStorage.setItem ("cart", cartJSON);
-    });
+    localStorage.setItem ("cart", JSON.stringify(cartArray));
 }
 
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
     const quantity = quantityElement.value;
-    return quantity;
+    return parseInt(quantity);
 }
 
 function getColor() {
     const colorElement = document.getElementById("colors");
-    const color = colorElement.options[colorElement.selectedIndex].text;
+    const color = colorElement.value;
     return color;
 }

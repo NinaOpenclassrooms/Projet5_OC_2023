@@ -43,7 +43,7 @@ async function getPrice() {
 
 function displayProduct(product) { 
      
-    for (let i = 0; i < cartArray.length; i++) { // BOUCLE OU for (product[i] of cartArray)?
+    for (let i = 0; i < cartArray.length; i++) { // BOUCLE OU for (product[i]? of cartArray)?
 
     
         //Cart
@@ -116,4 +116,4 @@ function displayProduct(product) {
         settingsCartDeleteElement.appendChild(deleteCartElement);
     }
 }
-displayProduct (cartArray);
+displayProduct (cartArray[i]);
