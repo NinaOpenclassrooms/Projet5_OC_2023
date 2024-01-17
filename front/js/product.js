@@ -93,13 +93,17 @@ function addToCart() {
             }
         };
         
-        if (findProduct === false) {
+        if (findProduct === false && cartObject.quantityProduct !== 0 && cartObject.quantityProduct < 100) { ////A METTRE AUTRE PART?
             cartArray.push (cartObject);  
         }
     } else {
-        cartArray = [];
-        cartArray.push (cartObject);
-
+        if (cartObject.quantityProduct !== 0 && cartObject.quantityProduct < 100) { //A METTRE AUTRE PART?
+            cartArray = [];
+            cartArray.push (cartObject);
+        }
+        else {
+            cartArray = [];
+        }
     }
 
     localStorage.setItem ("cart", JSON.stringify(cartArray));
@@ -129,6 +133,6 @@ function verifyQuantity(quantity) {
 function verifyColor (color) {
     if (color==="") {
         console.log("Erreur couleur");
-        alert("Choisissez une couleur.");
+        ("Choisissez une couleur.");
     }
 }

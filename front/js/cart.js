@@ -1,113 +1,123 @@
 //Fonction pour récupérer les éléments dans le localStorage
-let cart = localStorage.getItem("cart");
+let cartArray = localStorage.getItem("cart");
 if (cartArray) {
     cartArray = JSON.parse(cartArray);
     console.log(cartArray);
+    displayCartProduct(cartArray);
+} else {
+    alert("Le panier est vide.")
 }
 
-async function getName() {
-    try {
-        const reponse = await fetch(`http://localhost:3000/api/products/${cartArray.idProduct}`);
-        const product = await reponse.json();
-    
-        console.log(product.name);
-        const name =product.name;
-        return(name);
-    
+async function displayCartProduct(cartArray) { 
+        try {
+            
+            for (let i = 0; i < cartArray.length; i++) {
+
+            const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[i].idProduct}`);
+            const product = await reponse.json();
+        
+            console.log(product.name);
+
+            const div = `<article class="cart__item" data-id=${cartArray[i].idProduct} data-color=${cartArray[i].colorProduct}>
+            <div class="cart__item__img">
+            <img src=${product.imageUrl} alt=${product.altTxt}>
+            </div>
+            <div class="cart__item__content">
+            <div class="cart__item__content__description">
+                <h2>${product.name}</h2>
+                <p>${cartArray[i].colorProduct}</p>
+                <p>${product.price} €</p>
+            </div>
+            <div class="cart__item__content__settings">
+                <div class="cart__item__content__settings__quantity">
+                <p>Qté : </p>
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cartArray[i].quantityProduct}">
+                </div>
+                <div class="cart__item__content__settings__delete">
+                <p class="deleteItem">Supprimer</p>
+                </div>
+            </div>
+            </div>
+        </article>` 
+            const sectionCart = document.getElementById("cart__items");
+            const articleCartElement = document.createElement ("div");
+            sectionCart.appendChild (articleCartElement);
+            articleCartElement.innerHTML = div;
+            }
         } 
-    catch (error) {
-        console.log(error);
-        return;
+        catch (error) {
+            console.log(error);
+            return;
+        }
+}
+
+function verifyQuantity(quantity) {
+    if (quantity<1 || quantity>100 ) {
+        console.log("Erreur quantité");
+        alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
     }
 }
 
-async function getPrice() {
-    try {
-        const reponse = await fetch(`http://localhost:3000/api/products/${cartArray.idProduct}`);
-        const product = await reponse.json();
+
+// async function getName() {
+//     try {
+//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[i].idProduct}`);
+//         const product = await reponse.json();
     
-        console.log(product.price);
-        const price =product.price;
-        return(price);
+//         console.log(product.name);
+//         const name = product.name;
+//         return(name);
     
-        } 
-    catch (error) {
-        console.log(error);
-        return;
-    }
-}
+//         } 
+//     catch (error) {
+//         console.log(error);
+//         return;
+//     }
+// }
 
-function displayProduct(product) { 
-     
-    for (product of cartArray) { 
-        //Cart
-        const sectionCart = document.getElementById("cart__items");
+// async function getPrice() {
+//     try {
+//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
+//         const product = await reponse.json();
+    
+//         console.log(product.price);
+//         const price = product.price;
+//         return(price);
+    
+//         } 
+//     catch (error) {
+//         console.log(error);
+//         return;
+//     }
+// }
 
-        const articleElement = document.createElement("article");
-        articleElement.classList.add("cart__item");
+// async function getImageUrl() {
+//     try {
+//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
+//         const product = await reponse.json();
+    
+//         console.log(product.imageUrl);
+//         const image = product.imageUrl;
+//         return(image);
+    
+//         } 
+//     catch (error) {
+//         console.log(error);
+//         return;
+//     }
+// }
 
-        const divImageElement = document.createElement("div");
-        divImageElement.classList.add("cart__item__img");
-
-        const imageCartElement = document.createElement("img");
-        imageCartElement.classList.add("cart__item__img");
-        imageCartElement.src = "../images/product01.jpg";
-        imageCartElement.alt = "Photographie d'un canapé";
-
-        const cartElement = document.createElement("div");
-        cartElement.classList.add("cart__item__content");
-
-        const descriptionCartElement = document.createElement("div");
-        descriptionCartElement.classList.add("cart__item__content__description");
-
-        const nameCartElement = document.createElement("h2");
-        nameCartElement.innerText = `${getName()} €`;
-        const colorCartElement = document.createElement("p");
-        colorCartElement.innerText = cartArray[i].colorProduct;
-        const priceCartElement = document.createElement("p");
-        priceCartElement.innerText = `${getPrice()} €`;
-
-        const settingsCartElement = document.createElement("div"); 
-        settingsCartElement.classList.add("cart__item__content__settings");
-
-        const settingsCartQuantityElement = document.createElement("div"); 
-        settingsCartQuantityElement.classList.add("cart__item__content__settings__quantity");
-        const quantityCartElement = document.createElement("p");
-        quantityCartElement.innerText = "Qté : ";
-        const quantityInputElement = documment.createElement("input");
-        quantityInputElement.type = "number";
-        quantityInputElement.classList.add("itemQuantity");
-        quantityInputElement.name = "itemQuantity";
-        quantityInputElement.min = "1";
-        quantityInputElement.max = "100";
-        quantityInputElement.value = "";
-
-        const settingsCartDeleteElement = document.createElement("div"); 
-        settingsCartDeleteElement.classList.add("cart__item__content__settings__delete");
-        const deleteCartElement = document.createElement("p");
-        settingsCartDeleteElement.classList.add("deleteItem");
-        settingsCartDeleteElement.innerText = "Supprimer";
-
-        sectionCart.appendChild(articleElement);
-
-        articleElement.appendChild(divImageElement);
-
-        divImageElement.appendChild(imageCartElement)
-
-        articleElement.appendChild(cartElement);
-
-        cartElement.appendChild(descriptionCartElement);
-        descriptionCartElement.appendChild(nameCartElement);
-        descriptionCartElement.appendChild(colorCartElement);
-        descriptionCartElement.appendChild(priceCartElement);
-
-        cartElement.appendChild(settingsCartElement);
-
-        settingsCartElement.appendChild(settingsCartQuantityElement);
-        settingsCartQuantityElement.appendChild(quantityCartElement);
-        settingsCartQuantityElement.appendChild(quantityInputElement);
-        settingsCartElement.appendChild(settingsCartDeleteElement);
-        settingsCartDeleteElement.appendChild(deleteCartElement);
-    }
-}
-displayProduct (cartArray[i]);
+// async function getImageAlt() {
+//     try {
+//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
+//         const product = await reponse.json();
+    
+//         console.log(product.altTxt);
+//         const imageAlt = product.altTxt;
+//         return(imageAlt);
+//         } 
+//     catch (error) {
+//         console.log(error);
+//         return;
+//     }
+// }
