@@ -28,7 +28,7 @@ function getId() {
 
 async function displayProduct(product) {
     //Nom dans title
-    const nameTitle = document.querySelector("title");
+    const nameTitle = document.querySelector("title");   //A MODIFIER
     nameTitle.innerText = product.name;
 
     //Logo
@@ -72,10 +72,14 @@ addToCartBtn.addEventListener ("click", addToCart)
 function addToCart() {
 
     let cartObject = {
-        idProduct:`${getId()}`,
-        quantityProduct: `${getQuantity()}`,
-        colorProduct: `${getColor()}`
-    };
+        idProduct:getId(),
+        quantityProduct: getQuantity(),
+        colorProduct: getColor()
+    }
+    
+    if (verifyQuantity (cartObject.quantityProduct) === false || verifyColor (cartObject.colorProduct) === false) {
+        return;
+    }
 
     console.log(cartObject);
  
@@ -87,23 +91,17 @@ function addToCart() {
         for (product of cartArray) {
             if (product.idProduct === cartObject.idProduct && product.colorProduct === cartObject.colorProduct) {
                 findProduct = true;
-                product.quantityProduct += parseInt(cartObject.quantityProduct);  //A SIMPLIFIER? VERIFIER POUR LA DEUXIEME ITERATION
-                product.quantityProduct = parseInt(product.quantityProduct);
-                console.log(product.quantityProduct);
+                product.quantityProduct += cartObject.quantityProduct;                  
             }
         };
         
-        if (findProduct === false && cartObject.quantityProduct !== 0 && cartObject.quantityProduct < 100) { ////A METTRE AUTRE PART?
+        if (findProduct === false) { 
             cartArray.push (cartObject);  
         }
     } else {
-        if (cartObject.quantityProduct !== 0 && cartObject.quantityProduct < 100) { //A METTRE AUTRE PART?
+
             cartArray = [];
             cartArray.push (cartObject);
-        }
-        else {
-            cartArray = [];
-        }
     }
 
     localStorage.setItem ("cart", JSON.stringify(cartArray));
@@ -112,14 +110,12 @@ function addToCart() {
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
     const quantity = parseInt(quantityElement.value);
-    verifyQuantity (quantity);
     return quantity;
 }
 
 function getColor() {
     const colorElement = document.getElementById("colors");
     const color = colorElement.value;
-    verifyColor(color);
     return color;
 }
 
@@ -127,12 +123,16 @@ function verifyQuantity(quantity) {
     if (quantity<1 || quantity>100 ) {
         console.log("Erreur quantité");
         alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
+        return false;
     }
+    return true;
 }
 
 function verifyColor (color) {
     if (color==="") {
         console.log("Erreur couleur");
-        ("Choisissez une couleur.");
+        alert("Choisissez une couleur.");
+        return false;
     }
+    return true;
 }

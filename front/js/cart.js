@@ -5,13 +5,13 @@ if (cartArray) {
     console.log(cartArray);
     displayCartProduct(cartArray);
 } else {
-    alert("Le panier est vide.")
+    alert("Le panier est vide.")  //REDIRECTION VERS PAGE ACCUEIL
 }
 
 async function displayCartProduct(cartArray) { 
         try {
             
-            for (let i = 0; i < cartArray.length; i++) {
+            for (let i = 0; i < cartArray.length; i++) {  //MODIFIER AVEC OF
 
             const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[i].idProduct}`);
             const product = await reponse.json();
