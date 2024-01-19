@@ -27,9 +27,8 @@ function getId() {
 }
 
 async function displayProduct(product) {
-    //Nom dans title
-    const nameTitle = document.querySelector("title");   //A MODIFIER
-    nameTitle.innerText = product.name;
+    //Title
+    document.title = product.name;
 
     //Logo
     const sectionLogo = document.querySelector(".item__img");
