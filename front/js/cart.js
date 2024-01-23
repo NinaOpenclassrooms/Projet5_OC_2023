@@ -1,123 +1,118 @@
-//Fonction pour récupérer les éléments dans le localStorage
+//Importation des fonctions
+import { displayCartProduct } from "./modules/cartCreation.js";
+
+//Récupération des éléments dans le localStorage et affichage des produits du panier
 let cartArray = localStorage.getItem("cart");
 if (cartArray) {
     cartArray = JSON.parse(cartArray);
     console.log(cartArray);
     displayCartProduct(cartArray);
+
+//Ajout d'un listener pour supprimer un produit
+    let deleteList = document.querySelectorAll(".deleteItem");
+    console.log(deleteList);                                     //PROBLEME : LISTE VIDE
+     
+    for (let i = deleteList.length-1; i >= 0; i--) {
+        element.addEventListener("click", function() {
+            const id = getIdData(deleteList[i]);
+            const color = getcolorData(deleteList[i]);
+            deleteItem(id, color);
+        });
+    }
+
+//Ajout d'un listener pour modifier la quantité d'un produit
+    let quantityList = document.querySelectorAll(".itemQuantity");
+    console.log(quantityList);
+
+    for (element of quantityList) {
+        element.addEventListener("change", function() {
+            const id = getIdData(element);
+            const color = getcolorData(element);
+            changeQuantity(id, color);
+        });
+    }
 } else {
-    alert("Le panier est vide.")  //REDIRECTION VERS PAGE ACCUEIL
+    alert("Le panier est vide");  //A LAISSER?
+    document.location.href = "../html/index.html";
 }
 
-async function displayCartProduct(cartArray) { 
-        try {
-            
-            for (let i = 0; i < cartArray.length; i++) {  //MODIFIER AVEC OF
+function changeQuantity(id, color) {
 
-            const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[i].idProduct}`);
-            const product = await reponse.json();
-        
-            console.log(product.name);
+    //Message d'erreur si la quantité > 100
+    const quantity = element.value;
 
-            const div = `<article class="cart__item" data-id=${cartArray[i].idProduct} data-color=${cartArray[i].colorProduct}>
-            <div class="cart__item__img">
-            <img src=${product.imageUrl} alt=${product.altTxt}>
-            </div>
-            <div class="cart__item__content">
-            <div class="cart__item__content__description">
-                <h2>${product.name}</h2>
-                <p>${cartArray[i].colorProduct}</p>
-                <p>${product.price} €</p>
-            </div>
-            <div class="cart__item__content__settings">
-                <div class="cart__item__content__settings__quantity">
-                <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cartArray[i].quantityProduct}">
-                </div>
-                <div class="cart__item__content__settings__delete">
-                <p class="deleteItem">Supprimer</p>
-                </div>
-            </div>
-            </div>
-        </article>` 
-            const sectionCart = document.getElementById("cart__items");
-            const articleCartElement = document.createElement ("div");
-            sectionCart.appendChild (articleCartElement);
-            articleCartElement.innerHTML = div;
-            }
-        } 
-        catch (error) {
-            console.log(error);
-            return;
+    if (verifyCartQuantity (quantity) === false) {
+        return;
+    }
+
+    if (quantity === 0) {
+        deleteItem(id, color);
+    }
+
+    let findProduct = false;
+
+    for (product of cartArray) {
+
+        if (id === cartArray.idProduct && color === cartArray.colorProduct) {
+            findProduct = true;
+            cartArray.quantityProduct = quantity;
+            alert("changement");
         }
-}
-
-function verifyQuantity(quantity) {
-    if (quantity<1 || quantity>100 ) {
-        console.log("Erreur quantité");
-        alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
+        localStorage.setItem ("cart", JSON.stringify(cartArray));
     }
 }
 
+function verifyCartQuantity(quantity) {
 
-// async function getName() {
-//     try {
-//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[i].idProduct}`);
-//         const product = await reponse.json();
-    
-//         console.log(product.name);
-//         const name = product.name;
-//         return(name);
-    
-//         } 
-//     catch (error) {
-//         console.log(error);
-//         return;
-//     }
-// }
+    if (quantity>=100 ) {
+        console.log("Erreur quantité");
+        alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
+        return false;
+    }
+    return true;
+}
 
-// async function getPrice() {
-//     try {
-//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
-//         const product = await reponse.json();
+function deleteItem(id, color) {
     
-//         console.log(product.price);
-//         const price = product.price;
-//         return(price);
-    
-//         } 
-//     catch (error) {
-//         console.log(error);
-//         return;
-//     }
-// }
+    for (product of cartArray) {
 
-// async function getImageUrl() {
-//     try {
-//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
-//         const product = await reponse.json();
-    
-//         console.log(product.imageUrl);
-//         const image = product.imageUrl;
-//         return(image);
-    
-//         } 
-//     catch (error) {
-//         console.log(error);
-//         return;
-//     }
-// }
+        if (id === cartArray.idProduct && color === cartArray.colorProduct) {
+            findProduct = true;
+            cartArray.splice(product);
+            alert("supression");
+        }
+        localStorage.setItem ("cart", JSON.stringify(cartArray));
+    }
+    //Mise à jour de la page
+    updatePage()   
+    cartArray = localStorage.getItem("cart");
+    if (cartArray) {
+        cartArray = JSON.parse(cartArray);
+        console.log(cartArray);
+        displayCartProduct(cartArray);
+    } else {
+    alert("Le panier est vide");  //A LAISSER?
+    document.location.href = "../html/index.html";
+    } 
+    return
 
-// async function getImageAlt() {
-//     try {
-//         const reponse = await fetch(`http://localhost:3000/api/products/${cartArray[0].idProduct}`);
-//         const product = await reponse.json();
-    
-//         console.log(product.altTxt);
-//         const imageAlt = product.altTxt;
-//         return(imageAlt);
-//         } 
-//     catch (error) {
-//         console.log(error);
-//         return;
-//     }
-// }
+}
+
+function getIdData(element) {
+    const idElement = element.closest(".cart__item");
+    const id = idElement.dataset.dataId;
+    console.log(id);
+    return id
+}
+
+function getcolorData(element) {
+    const idElement = element.closest(".cart__item");
+    const color = idElement.dataset.dataColor;
+    console.log(color);
+    return color
+}
+
+function updatePage() {
+    document.getElementById("cart__items").innerHTML = "";
+    return
+}

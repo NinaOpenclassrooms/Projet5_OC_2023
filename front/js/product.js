@@ -65,8 +65,7 @@ async function displayProduct(product) {
 
 
 const addToCartBtn = document.getElementById("addToCart");
-addToCartBtn.addEventListener ("click", addToCart)
-
+addToCartBtn.addEventListener ("click", addToCart);
 
 function addToCart() {
 
@@ -108,7 +107,7 @@ function addToCart() {
 
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
-    const quantity = parseInt(quantityElement.value);
+    const quantity = parseInt(quantityElement.value);  //VERIF SI IL FAUT PARSEINT
     return quantity;
 }
 
@@ -119,7 +118,7 @@ function getColor() {
 }
 
 function verifyQuantity(quantity) {
-    if (quantity<1 || quantity>100 ) {
+    if (quantity<1 || quantity>=100 ) {
         console.log("Erreur quantité");
         alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
         return false;
