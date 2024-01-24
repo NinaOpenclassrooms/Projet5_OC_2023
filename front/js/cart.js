@@ -8,29 +8,29 @@ if (cartArray) {
     console.log(cartArray);
     displayCartProduct(cartArray);
 
-//Ajout d'un listener pour supprimer un produit
-    let deleteList = document.querySelectorAll(".deleteItem");
-    console.log(deleteList);                                     //PROBLEME : LISTE VIDE
-     
-    for (let i = deleteList.length-1; i >= 0; i--) {
-        element.addEventListener("click", function() {
-            const id = getIdData(deleteList[i]);
-            const color = getcolorData(deleteList[i]);
-            deleteItem(id, color);
-        });
-    }
+// //Ajout d'un listener pour supprimer un produit
+//     let deleteList = document.querySelectorAll(".deleteItem");     //PROBLEME : LISTE VIDE
+//     console.log(deleteList);  
 
-//Ajout d'un listener pour modifier la quantité d'un produit
-    let quantityList = document.querySelectorAll(".itemQuantity");
-    console.log(quantityList);
+//     for (let i = deleteList.length-1; i >= 0; i--) {
+//         deleteList[i].addEventListener("click", function() {
+//             const id = getIdData(deleteList[i]);
+//             const color = getcolorData(deleteList[i]);
+//             deleteItem(id, color);
+//         });
+//     }
 
-    for (element of quantityList) {
-        element.addEventListener("change", function() {
-            const id = getIdData(element);
-            const color = getcolorData(element);
-            changeQuantity(id, color);
-        });
-    }
+// //Ajout d'un listener pour modifier la quantité d'un produit
+//     let quantityList = document.querySelectorAll(".itemQuantity");
+//     console.log(quantityList);
+
+//     for (element of quantityList) {
+//         element.addEventListener("change", function() {
+//             const id = getIdData(element);
+//             const color = getcolorData(element);
+//             changeQuantity(id, color);
+//         });
+//     }
 } else {
     alert("Le panier est vide");  //A LAISSER?
     document.location.href = "../html/index.html";
@@ -41,7 +41,7 @@ function changeQuantity(id, color) {
     //Message d'erreur si la quantité > 100
     const quantity = element.value;
 
-    if (verifyCartQuantity (quantity) === false) {
+    if (verifyCartQuantity(quantity) === false) {
         return;
     }
 
