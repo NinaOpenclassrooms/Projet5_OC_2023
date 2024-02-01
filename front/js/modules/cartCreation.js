@@ -43,8 +43,9 @@ export async function displayCartProduct(product, element) {
     quantityElement.max = "100";
     quantityElement.value = element.quantityProduct;
     //Ajout d'un listener pour la modifier la quantité d'un produit
-    quantityElement.addEventListener("change", function (event) {    //NE FONCTIONNE PAS SANS FUNCTION, A REVOIR
-        if (event.target.value === 0) {
+    quantityElement.addEventListener("change", (event) => {  //NE FONCTIONNE PAS SANS FUNCTION, A REVOIR
+        console.log(event.target.value)
+        if (parseInt(event.target.value) === 0) {
             deleteProductCart(event);
         } else {
             modifyQuantityCart(event)
@@ -80,24 +81,6 @@ export async function displayCartProduct(product, element) {
     cartSettingsDeleteElement.appendChild(deleteParagraphElement);
 }
 
-
-
-
-// //Ajout d'un listener pour modifier la quantité d'un produit
-// let quantityList = document.querySelectorAll(".itemQuantity");
-// console.log(quantityList);
-
-// for (let i = 0; i < quantityList.length; i++) {
-//     quantityList[i].addEventListener("change", function () {
-//         const id = getIdData(quantityList[i]);
-//         const color = getcolorData(quantityList[i]);
-//         const newquantity = quantityList[i].value;
-//         changeQuantity(id, color, newquantity, cartArray);
-//     });
-// }
-
-
-
 function deleteProductCart(event) {
 
     //Récupération de l'id et de la couleur de l'article à supprimer
@@ -107,14 +90,15 @@ function deleteProductCart(event) {
 
     //Modification du DOM pour supprimer l'article
     console.log(articleElement);
-    articleElement.innnerHTML = "";    //NECESSITE MISE A JOUR DE LA PAGE
+    articleElement.innnerHTML = "";
 
     //Récupération du local storage
     let cartArray = localStorage.getItem("cart");
-    if (cartArray) {
-        cartArray = JSON.parse(cartArray);
-        console.log(cartArray);
+    if (!cartArray) {
+        window.location.reload();
     }
+    cartArray = JSON.parse(cartArray);
+    console.log(cartArray);
 
     //Mise à jour du local storage
     for (let i = cartArray.length - 1; i >= 0; i--) {
@@ -137,7 +121,7 @@ function deleteProductCart(event) {
 
 function modifyQuantityCart(event) {
 
-    const newquantity = event.target.value;
+    const newquantity = parseInt(event.target.value);
     console.log(newquantity);
 
     //Message d'erreur si la quantité > 100
@@ -150,20 +134,19 @@ function modifyQuantityCart(event) {
     const id = articleElement.dataset.id;
     const color = articleElement.dataset.color;
 
-    //Modification du DOM pour modifier la quantité de l'article
-    event.value = newquantity;
-
     //Récupération du local storage
     let cartArray = localStorage.getItem("cart");
-    if (cartArray) {
-        cartArray = JSON.parse(cartArray);
-        console.log(cartArray);
+    if (!cartArray) {
+        window.location.reload();
+        return
     }
 
-    //Mise à jour du local storage
-    let product = {};              //NE FONCTIONNE PAS SANS 
+    cartArray = JSON.parse(cartArray);
+    console.log(cartArray);
 
-    for (product of cartArray) {
+    //Mise à jour du local storage
+
+    for (let product of cartArray) {
 
         if (id === product.idProduct && color === product.colorProduct) {
             product.quantityProduct = newquantity;
