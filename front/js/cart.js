@@ -27,11 +27,6 @@ if (cartArray) {
     const totalQuantityElement = document.getElementById("totalQuantity");
     totalQuantityElement.innerText = getSumQuantity();
 
-
-    //Formulaire de coordonnées
-    const orderElement = document.getElementById("order");
-    orderElement.addEventListener("click" || "keypress", event => checkFormValidity(event))
-
 } else {
     alert("Le panier est vide");  //A LAISSER?
     document.location.href = "../html/index.html";
@@ -81,50 +76,3 @@ function getSumQuantity() {
 //     return sum;
 // }
 
-function checkFormValidity(event) {
-    event.preventDefault();
-    const firstNameElement = document.getElementById("firstName");
-    const firstName = firstNameElement.value;
-
-    if (firstName === "") {
-        alert("Veuillez renseigner votre prénom.");
-    }
-    let regexFirstName = new RegExp("^[A-Za-z\é\è\ê\-\ï\ë]+$")
-    let validationFirstName = regexFirstName.test(firstName);
-    if (validationFirstName === false) {
-        alert("Le format du prénom n'est pas correct.")
-    }
-    console.log(firstName);
-
-    const lastNameElement = document.getElementById("lastName");
-    const lastName = lastNameElement.value;
-    if (lastName === "") {
-        alert("Veuillez renseigner votre nom.");
-    }
-    let regexLastName = new RegExp("^[A-Za-z\é\è\ê\-\ï\ë\ ]+$")
-    let validationLastName = regexLastName.test(lastName);
-    if (validationLastName === false) {
-        alert("Le format du nom n'est pas correct.")
-    }
-
-    const addressElement = document.getElementById("address");
-    const address = addressElement.value;
-    if (address === "") {
-        alert("Veuillez renseigner votre adresse.");
-    }
-
-    const cityElement = document.getElementById("city");
-    const city = cityElement.value;
-    if (city === "") {
-        alert("Veuillez renseigner votre ville.");
-    }
-    let validationCity = regexLastName.test(city);
-    if (validationCity === false) {
-        alert("Le format de la ville n'est pas correct.")
-    }
-    const emailElement = document.getElementById("email");
-    const email = emailElement.value;
-    if (email === "") {
-        alert("Veuillez renseigner votre e-mail.");
-    }
-}
