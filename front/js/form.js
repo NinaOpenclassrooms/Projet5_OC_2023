@@ -50,23 +50,14 @@ orderElement.addEventListener("click" || "keypress", (event) => {
         }
 
         //Envoi de l'objet clientContactDetails et de l'array orderSummary à l'API
-        const reponse = await fetch("http://localhost:3000/api/products/order", {
-            methode: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8"
-            },
-            body: {
-                contact: JSON.stringify(clientContactDetails),
-                product- ID: JSON.stringify(orderSummary)
-        }
-        });
-const order = await reponse.json();
+        getOrderld(clientContactDetails, orderSummary)
 
-console.log(order.orderId);
+        //Redirection vers la page de confirmation
+        document.location.href = `confirmation.html?orderId=${getOrderld(clientContactDetails, orderSummary)}`;
 
     } catch (error) {
-    console.log("Une erreur est survenue : " + error.message)
-}
+        console.log("Une erreur est survenue : " + error.message)
+    }
 });
 
 function checkFieldValidity(field) {
@@ -147,4 +138,28 @@ function getProductSummary(element) {
         productQuantity: productQuantity
     }
     return productSummary
+}
+
+async function getOrderld(clientContactDetails, orderSummary) {
+    try {
+        let response = await fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            },
+            body: {
+                "contact": JSON.stringify(clientContactDetails),
+                "productId": JSON.stringify(orderSummary)
+            }
+        });
+        let order = await response.json();
+
+        console.log(order.orderld);
+
+        return order.orderld
+    }
+    catch (error) {
+        console.log(error);
+        return;
+    }
 }

@@ -1,8 +1,8 @@
 
 async function getProduct() {
     try {
-        const reponse = await fetch(`http://localhost:3000/api/products/${getId()}`);
-        const product = await reponse.json();
+        const response = await fetch(`http://localhost:3000/api/products/${getId()}`);
+        const product = await response.json();
 
         displayProduct(product);
     }
@@ -16,10 +16,8 @@ getProduct()
 function getId() {
     const str = window.location.href;
     const url = new URL(str);
-    console.log(url);
-
     const id = url.searchParams.get("id");
-    console.log(id);
+
     return id;
 }
 
