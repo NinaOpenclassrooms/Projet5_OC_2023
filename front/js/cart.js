@@ -7,10 +7,7 @@ if (cartArray) {
     cartArray = JSON.parse(cartArray);
     console.log(cartArray);
 
-
-    let element = {};    //NE FONCTIONNE PAS SANS, A REVOIR
-
-    for (element of cartArray) {
+    for (let element of cartArray) {
         try {
             const reponse = await fetch(`http://localhost:3000/api/products/${element.idProduct}`);
             const product = await reponse.json();
@@ -28,7 +25,7 @@ if (cartArray) {
     totalQuantityElement.innerText = getSumQuantity();
 
 } else {
-    alert("Le panier est vide");  //A LAISSER?
+    alert("Le panier est vide");                                 //A LAISSER?
     document.location.href = "../html/index.html";
 }
 
@@ -51,8 +48,7 @@ function getSumQuantity() {
 
     let sum = 0;
 
-    let element = {};
-    for (element of quantityElementsList) {
+    for (let element of quantityElementsList) {
         sum += parseInt(element.value);
     }
     return sum

@@ -2,7 +2,7 @@ export async function displayCartProduct(product, element) {
 
     //Création de l'article 
     const sectionCart = document.getElementById("cart__items");
-    const articleElement = document.createElement("article");   //METTRE CART DANS LE NOM?
+    const articleElement = document.createElement("article");
     articleElement.classList.add("cart__item");
     articleElement.setAttribute("data-id", element.idProduct);
     articleElement.setAttribute("data-color", element.colorProduct);
@@ -43,7 +43,7 @@ export async function displayCartProduct(product, element) {
     quantityElement.max = "100";
     quantityElement.value = element.quantityProduct;
     //Ajout d'un listener pour la modifier la quantité d'un produit
-    quantityElement.addEventListener("change", (event) => {  //NE FONCTIONNE PAS SANS FUNCTION, A REVOIR
+    quantityElement.addEventListener("change", (event) => {
         console.log(event.target.value)
         if (parseInt(event.target.value) === 0) {
             deleteProductCart(event);

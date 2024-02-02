@@ -4,8 +4,6 @@ async function getProduct() {
         const reponse = await fetch(`http://localhost:3000/api/products/${getId()}`);
         const product = await reponse.json();
 
-        console.log(product.name);
-
         displayProduct(product);
     }
     catch (error) {
