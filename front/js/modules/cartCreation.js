@@ -1,3 +1,8 @@
+/**
+ * Display the products of the cart
+ * @param { Object } product 
+ * @param { Object } element 
+ */
 export async function displayCartProduct(product, element) {
 
     //Création de l'article 
@@ -81,6 +86,10 @@ export async function displayCartProduct(product, element) {
     cartSettingsDeleteElement.appendChild(deleteParagraphElement);
 }
 
+/**
+ * Delete the article(s) when "Supprimer" is clicked
+ * @param {*} event 
+ */
 function deleteProductCart(event) {
 
     //Récupération de l'id et de la couleur de l'article à supprimer
@@ -119,6 +128,11 @@ function deleteProductCart(event) {
     }
 }
 
+/**
+ * Modify the quantity when the quantity input is changed
+ * @param {*} event 
+ * @returns if the local Storage is empty
+ */
 function modifyQuantityCart(event) {
 
     const newquantity = parseInt(event.target.value);
@@ -145,7 +159,6 @@ function modifyQuantityCart(event) {
     console.log(cartArray);
 
     //Mise à jour du local storage
-
     for (let product of cartArray) {
 
         if (id === product.idProduct && color === product.colorProduct) {
@@ -156,14 +169,14 @@ function modifyQuantityCart(event) {
     }
 }
 
-function updatePage() {
-    document.getElementById("cart__items").innerHTML = "";
-    return;
-}
-
+/**
+ * Verify that quantity <=100
+ * @param { Integer } quantity 
+ * @returns boolean 
+ */
 function verifyCartQuantity(quantity) {
 
-    if (quantity >= 100) {     //REMETTRE LA VALEUR A LA QUANTITE PREALABLE?
+    if (quantity >= 100) {
         alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
         return false;
     }

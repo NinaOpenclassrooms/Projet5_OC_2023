@@ -1,3 +1,6 @@
+//Exportation des variables
+export let clientContact;
+
 //Formulaire de coordonnées
 const orderElement = document.getElementById("order");
 orderElement.addEventListener("click" || "keypress", (event) => {
@@ -31,7 +34,7 @@ orderElement.addEventListener("click" || "keypress", (event) => {
         console.log("Test Ok!")
 
         //Création d'un objet contenant les coordonnées du client
-        const clientContactDetails = {
+        let clientContact = {
             firstName: firstNameElement.value,
             lastName: lastNameElement.value,
             address: addressElement.value,
@@ -39,27 +42,16 @@ orderElement.addEventListener("click" || "keypress", (event) => {
             email: emailElement.value
         }
 
-        //Création d'un tableau contenant les produits commandés
-        const articleElementList = document.querySelectorAll(".cart__item");
-
-        const orderSummary = [];
-
-        for (let element of articleElementList) {
-
-            orderSummary.push(getProductSummary(element));
-        }
-
-        //Envoi de l'objet clientContactDetails et de l'array orderSummary à l'API
-        getOrderld(clientContactDetails, orderSummary)
-
-        //Redirection vers la page de confirmation
-        document.location.href = `confirmation.html?orderId=${getOrderld(clientContactDetails, orderSummary)}`;
-
     } catch (error) {
         console.log("Une erreur est survenue : " + error.message)
     }
 });
 
+/**
+ * Check that the form field is not empty
+ * @param {HTMLElement} field 
+ * @returns 
+ */
 function checkFieldValidity(field) {
     let fieldValue = field.value.trim();
 
@@ -69,6 +61,11 @@ function checkFieldValidity(field) {
     return
 }
 
+/**
+ * Check the first name format in the form, send an error message if the format is incorrect
+ * @param { HTMLElement } firstNameElement 
+ * @returns 
+ */
 function checkFirstName(firstNameElement) {
     let firstName = firstNameElement.value.trim();
     let regexFirstName = new RegExp("^[A-Za-z\é\è\ê\ï\ë\É\È\Ê\Ï\Ë\-]{2,15}$")
@@ -79,6 +76,11 @@ function checkFirstName(firstNameElement) {
     return
 }
 
+/**
+ * Check the first name format in the form, send an error message if the format is incorrect
+ * @param { HTMLElement } lastNameElement 
+ * @returns 
+ */
 function checkLastName(lastNameElement) {
     let lastName = lastNameElement.value.trim();
     let regexLastName = new RegExp("^[A-Za-z\é\è\ê\ï\ë\â\ä\ü\É\È\Ê\Ï\Ë\Â\Ä\Ü\-\\s]{2,50}$")
@@ -89,6 +91,11 @@ function checkLastName(lastNameElement) {
     return
 }
 
+/**
+ * Check the address format in the form, send an error message if the format is incorrect
+ * @param { HTMLElement } addressElement
+ * @returns 
+ */
 function checkAddress(addressElement) {
     let address = addressElement.value.trim();
     let regexAddress = new RegExp("^[0-9A-Za-z\é\è\ê\ï\ë\â\ä\ü\É\È\Ê\Ï\Ë\Â\Ä\Ü\-\\s]{2,100}$")
@@ -99,6 +106,11 @@ function checkAddress(addressElement) {
     return
 }
 
+/**
+ * Check the city format in the form, send an error message if the format is incorrect
+ * @param { HTMLElement } cityElement
+ * @returns 
+ */
 function checkCity(cityElement) {
     let city = cityElement.value.trim();
     let regexCity = new RegExp("^[A-Za-z\é\è\ê\ï\ë\â\ä\ü\É\È\Ê\Ï\Ë\Â\Ä\Ü\-\\s]{2,50}$")
@@ -109,6 +121,11 @@ function checkCity(cityElement) {
     return
 }
 
+/**
+ * Check the email format in the form, send an error message if the format is incorrect
+ * @param { HTMLElement } emailElement 
+ * @returns 
+ */
 function checkEmail(emailElement) {
     let email = emailElement.value.trim();
     let regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+")
@@ -117,49 +134,4 @@ function checkEmail(emailElement) {
         throw new Error(alert("Le champ Email n'a pas le format attendu."))
     }
     return
-}
-
-function getProductSummary(element) {
-
-    const productNameElement = element.querySelector(".cart__item__content__description h2");
-    const productName = productNameElement.innerText;
-    const productId = element.dataset.id;
-    const productColor = element.dataset.color;
-    const productPriceElement = element.querySelector(".cart__item__content__description p:nth-child(3)");
-    const productPrice = productPriceElement.innerText;
-    const productQuantityElement = element.querySelector(".itemQuantity");
-    const productQuantity = productQuantityElement.value;
-
-    const productSummary = {
-        productName: productName,            //PEUT ÊTRE RETIRE
-        productId: productId,
-        productColor: productColor,
-        productPrice: productPrice,          //PEUT ÊTRE RETIRE
-        productQuantity: productQuantity
-    }
-    return productSummary
-}
-
-async function getOrderld(clientContactDetails, orderSummary) {
-    try {
-        let response = await fetch("http://localhost:3000/api/products/order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8"
-            },
-            body: {
-                "contact": JSON.stringify(clientContactDetails),
-                "productId": JSON.stringify(orderSummary)
-            }
-        });
-        let order = await response.json();
-
-        console.log(order.orderld);
-
-        return order.orderld
-    }
-    catch (error) {
-        console.log(error);
-        return;
-    }
 }

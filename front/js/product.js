@@ -1,4 +1,8 @@
 
+/**
+ * Send request using fetch api to get the object product
+ * @returns 
+ */
 async function getProduct() {
     try {
         const response = await fetch(`http://localhost:3000/api/products/${getId()}`);
@@ -13,6 +17,10 @@ async function getProduct() {
 }
 getProduct()
 
+/**
+ * Get the product's id in the url of the page
+ * @returns { String } id
+ */
 function getId() {
     const str = window.location.href;
     const url = new URL(str);
@@ -21,6 +29,10 @@ function getId() {
     return id;
 }
 
+/**
+ * Display the product (image, name, description, price, color choices)
+ * @param { Object } product 
+ */
 async function displayProduct(product) {
     //Title
     document.title = product.name;
@@ -60,6 +72,10 @@ async function displayProduct(product) {
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
 
+/**
+ * Add the products to the cart by using the local Storage
+ * @returns if the quantity or the color of the product is incorrect
+ */
 function addToCart() {
 
     let cartObject = {
@@ -99,18 +115,31 @@ function addToCart() {
     alert("Le produit a été ajouté à votre panier.")
 }
 
+/**
+ * Get quantity chosen by the user for the product
+ * @returns { Integer } quantity
+ */
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
     const quantity = parseInt(quantityElement.value);  //VERIF SI IL FAUT PARSEINT
     return quantity;
 }
 
+/**
+ * Get color chosen by the user for the product
+ * @returns { String } color
+ */
 function getColor() {
     const colorElement = document.getElementById("colors");
     const color = colorElement.value;
     return color;
 }
 
+/**
+ * Verify that the quantity is >=1 and <=100
+ * @param { Integer } quantity 
+ * @returns boolean
+ */
 function verifyQuantity(quantity) {
     if (quantity < 1 || quantity >= 100) {
         console.log("Erreur quantité");
@@ -120,6 +149,11 @@ function verifyQuantity(quantity) {
     return true;
 }
 
+/**
+ * Verify that a color has been chosen for the product
+ * @param { String } color 
+ * @returns boolean
+ */
 function verifyColor(color) {
     if (color === "") {
         console.log("Erreur couleur");
