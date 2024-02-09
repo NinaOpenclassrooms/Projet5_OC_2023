@@ -1,8 +1,6 @@
 //Importation des fonctions
 import { displayCartProduct } from "./modules/cartCreation.js";
-
-//Importation des variables
-import { clientContact } from "./form.js";
+import { verifyForm } from "./modules/form.js";
 
 //Récupération des éléments dans le localStorage et affichage des produits du panier
 let cartArray = localStorage.getItem("cart");
@@ -26,22 +24,25 @@ if (cartArray) {
     const totalQuantityElement = document.getElementById("totalQuantity");
     totalQuantityElement.innerText = getSumQuantity();
 
+    const orderElement = document.getElementById("order");
+    orderElement.addEventListener("click" || "keypress", (event) => verifyForm());
 
-    //Création d'un tableau contenant les produits commandés           UTILISER CARTARRAY A LA  PLACE?
-    const articleElementList = document.querySelectorAll(".cart__item");
 
-    const orderSummary = [];
 
-    for (let element of articleElementList) {
-        orderSummary.push(getProductSummary(element));
-    }
+    // //Création d'un tableau contenant les produits commandés           //UTILISER LE LOCAL STORAGE A LA PLACE
+    // let orderSummary = [];
 
-    //Envoi de l'objet clientContact et de l'array orderSummary à l'API, effacement du local Storage et redirection vers la page de confirmation
-    if (getOrderId(clientContact, orderSummary)) {
-        console.log("Test")
-        localStorage.removeItem("cart");
-        document.location.href = `confirmation.html?orderId=${getOrderId(clientContact, orderSummary)}`;
-    }
+    // for (element of cartArray) {
+    //     orderSummary += element.productId;
+    // }
+    // console.log(orderSummary);
+
+    // //Envoi de l'objet clientContact et de l'array orderSummary à l'API, effacement du local Storage et redirection vers la page de confirmation
+    // if (getOrderId(clientContact, orderSummary)) {           //CLIENTCONTACT EST VIDE
+    //     console.log("Test")
+    //     // localStorage.removeItem("cart");
+    //     // document.location.href = `confirmation.html?orderId=${getOrderId(clientContact, orderSummary)}`;
+    // }
 
 } else {
     alert("Le panier est vide");
@@ -81,7 +82,7 @@ function getSumQuantity() {
     return sum
 }
 
-// function getSumPrice(cartArray, product) {
+// function getSumPrice(cartArray, product) {   //MIEUX DU LOCAL STORAGE
 //     let sum = 0;
 //     let element = {};
 //     for (element of cartArray) {
@@ -100,33 +101,7 @@ function getSumQuantity() {
 // }
 
 /**
- * Get the item data (productName, productId, productColor, productPrice, proctQuantity) in an the object productSummary
- * @param { HTMLElement } element 
- * @returns { Object } productSummary
- */
-function getProductSummary(element) {
-
-    const productNameElement = element.querySelector(".cart__item__content__description h2");
-    const productName = productNameElement.innerText;
-    const productId = element.dataset.id;
-    const productColor = element.dataset.color;
-    const productPriceElement = element.querySelector(".cart__item__content__description p:nth-child(3)");
-    const productPrice = productPriceElement.innerText;
-    const productQuantityElement = element.querySelector(".itemQuantity");
-    const productQuantity = productQuantityElement.value;
-
-    const productSummary = {
-        productName: productName,            //PEUT ÊTRE RETIRE
-        productId: productId,
-        productColor: productColor,
-        productPrice: productPrice,          //PEUT ÊTRE RETIRE
-        productQuantity: productQuantity
-    }
-    return productSummary
-}
-
-/**
- * Send request using fetch api and returns order number
+ * Send request using fetch api and return order number
  * @param { Object } clientContact 
  * @param { Array } orderSummary 
  * @returns { Promise } orderId

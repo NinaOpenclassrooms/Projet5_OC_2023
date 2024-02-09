@@ -63,7 +63,7 @@ export async function displayCartProduct(product, element) {
     deleteParagraphElement.classList.add("deleteItem");
     deleteParagraphElement.innerText = "Supprimer";
     //Ajout d'un listener pour supprimer un produit
-    deleteParagraphElement.addEventListener("click", event => deleteProductCart(event));
+    deleteParagraphElement.addEventListener("click", (event) => deleteProductCart(event));
 
     //Création des nouveaux éléments du DOM
     sectionCart.appendChild(articleElement);
@@ -88,7 +88,7 @@ export async function displayCartProduct(product, element) {
 
 /**
  * Delete the article(s) when "Supprimer" is clicked
- * @param {*} event 
+ * @param { Object } event 
  */
 function deleteProductCart(event) {
 
@@ -112,7 +112,7 @@ function deleteProductCart(event) {
     //Mise à jour du local storage
     for (let i = cartArray.length - 1; i >= 0; i--) {
 
-        if (id === cartArray[i].idProduct && color === cartArray[i].colorProduct) {   //REVOIR AVEC LA METHODE OF POUR LE SPLICE
+        if (id === cartArray[i].idProduct && color === cartArray[i].colorProduct) {
             cartArray.splice(i, 1);
             alert("supression");
         }
