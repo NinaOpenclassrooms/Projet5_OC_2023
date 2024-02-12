@@ -8,8 +8,6 @@ export function verifyForm() {
     try {
         event.preventDefault();
 
-        let errorMessage = "";
-
         //Champ prénom
         const firstNameElement = document.getElementById("firstName");
         let firstName = firstNameElement.value.trim();
@@ -17,7 +15,7 @@ export function verifyForm() {
         let validationFirstName = regexFirstName.test(firstName);
         if (validationFirstName === false) {
             const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-            firstNameErrorMsg.innerText = "Le champ Prénom n'a pas le format attendu."
+            firstNameErrorMsg.innerText = "Le champ n\'a pas le format attendu."
         }
 
         //Champ nom
@@ -27,17 +25,17 @@ export function verifyForm() {
         let validationLastName = regexLastName.test(lastName);
         if (validationLastName === false) {
             const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-            lastNameErrorMsg.innerText = "Le champ Nom n'a pas le format attendu."
+            lastNameErrorMsg.innerText = "Le champ n\'a pas le format attendu."
         }
 
         //Champ adresse
         const addressElement = document.getElementById("address");
         let address = addressElement.value.trim();
-        let regexAddress = new RegExp("^[0-9a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,100}$");
+        let regexAddress = new RegExp("[0-9]{0,3}[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,100}");   //OBLIGATION QU'IL Y AIT DES LETTRES
         let validationAddress = regexAddress.test(address);
         if (validationAddress === false) {
             const addressErrorMsg = document.getElementById("addressErrorMsg");
-            addressErrorMsg.innerText = "Le champ Adresse n'a pas le format attendu."
+            addressErrorMsg.innerText = "Le champ n\'a pas le format attendu."
         }
 
         //Champ ville
@@ -47,31 +45,35 @@ export function verifyForm() {
         let validationCity = regexCity.test(city);
         if (validationCity === false) {
             const cityErrorMsg = document.getElementById("cityErrorMsg");
-            cityErrorMsg.innerText = "Le champ Ville n'a pas le format attendu."
+            cityErrorMsg.innerText = "Le champ n\'a pas le format attendu."
         }
 
         //Champ email
         const emailElement = document.getElementById("email");
         let email = emailElement.value.trim();
-        let regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,10}+")
+        let regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,10}")
         let validationEmail = regexEmail.test(email);
         if (validationEmail === false) {
             const emailErrorMsg = document.getElementById("emailErrorMsg");
-            emailErrorMsg.innerText = "Le champ E-mail n'a pas le format attendu."
+            emailErrorMsg.innerText = "Le champ n\'a pas le format attendu."
         }
+        // } else {
+        //     firstNameErrorMsg.innerText = ""   NE FONCTIONNE PAS POUR EFFACER LE MESSAGE D'ERREUR
+        // }
 
-        console.log("Validation du formulaire terminée.")
+        if (validationFirstName === true && validationLastName === true && validationAddress === true && validationCity === true && validationEmail === true) {
 
-        //Création d'un objet contenant les coordonnées du client
-        let clientContact = {
-            firstName: firstNameElement.value,
-            lastName: lastNameElement.value,
-            address: addressElement.value,
-            city: cityElement.value,     //A VERIF
-            email: emailElement.value
+            //Création d'un objet contenant les coordonnées du client
+            let clientContact = {
+                firstName: firstNameElement.value,
+                lastName: lastNameElement.value,
+                address: addressElement.value,
+                city: cityElement.value,
+                email: emailElement.value
+            }
+            console.log("Validation du formulaire terminée.")
+            return clientContact
         }
-        console.log(clientContact);
-        return clientContact
     } catch (error) {
         console.log("Une erreur est survenue : " + error.message)
     }
