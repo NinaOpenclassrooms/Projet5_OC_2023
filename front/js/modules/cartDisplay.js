@@ -49,7 +49,6 @@ export async function displayCartProduct(product, element) {
     quantityElement.value = element.quantityProduct;
     //Ajout d'un listener pour la modifier la quantité d'un produit
     quantityElement.addEventListener("change", (event) => {
-        console.log(event.target.value)
         if (parseInt(event.target.value) === 0) {
             deleteProductCart(event);
         } else {
@@ -65,7 +64,7 @@ export async function displayCartProduct(product, element) {
     //Ajout d'un listener pour supprimer un produit
     deleteParagraphElement.addEventListener("click", (event) => deleteProductCart(event));
 
-    //Création des nouveaux éléments du DOM
+    //Rattachement des nouveaux éléments du DOM
     sectionCart.appendChild(articleElement);
 
     articleElement.appendChild(imageContainerElement);
@@ -98,7 +97,6 @@ function deleteProductCart(event) {
     const color = articleElement.dataset.color;
 
     //Modification du DOM pour supprimer l'article
-    console.log(articleElement);
     articleElement.innnerHTML = "";
 
     //Récupération du local storage
@@ -107,20 +105,19 @@ function deleteProductCart(event) {
         window.location.reload();
     }
     cartArray = JSON.parse(cartArray);
-    console.log(cartArray);
 
     //Mise à jour du local storage
     for (let i = cartArray.length - 1; i >= 0; i--) {
 
         if (id === cartArray[i].idProduct && color === cartArray[i].colorProduct) {
             cartArray.splice(i, 1);
-            alert("supression");
+            alert("L'article a été supprimé du panier.");
         }
         localStorage.setItem("cart", JSON.stringify(cartArray));
     }
 
     //Retour à la page d'accueil si le panier est vide ou mise à jour de la page
-    if (cartArray.length === 0) {                        //NE FONCTIONNE PAS AVEC CartArray === null
+    if (cartArray.length === 0) {
         console.log("Le panier est vide!!!")
         document.location.href = "../html/index.html";
     } else {
@@ -136,7 +133,6 @@ function deleteProductCart(event) {
 function modifyQuantityCart(event) {
 
     const newquantity = parseInt(event.target.value);
-    console.log(newquantity);
 
     //Message d'erreur si la quantité > 100
     if (verifyCartQuantity(newquantity) === false) {
@@ -156,14 +152,13 @@ function modifyQuantityCart(event) {
     }
 
     cartArray = JSON.parse(cartArray);
-    console.log(cartArray);
 
     //Mise à jour du local storage
     for (let product of cartArray) {
 
         if (id === product.idProduct && color === product.colorProduct) {
             product.quantityProduct = newquantity;
-            alert("changement");
+            alert("La quantité a été mise à jour.");
         }
         localStorage.setItem("cart", JSON.stringify(cartArray));
     }

@@ -13,9 +13,10 @@ export function verifyForm() {
         let firstName = firstNameElement.value.trim();
         let regexFirstName = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-]{2,15}$");
         let validationFirstName = regexFirstName.test(firstName);
+        const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+        firstNameErrorMsg.innerText = "";
         if (validationFirstName === false) {
-            const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-            firstNameErrorMsg.innerText = "Le champ n\'a pas le format attendu."
+            firstNameErrorMsg.innerText = "Le champ n\'a pas le format attendu (uniquement des lettres sans espaces)."
         }
 
         //Champ nom
@@ -23,19 +24,21 @@ export function verifyForm() {
         let lastName = lastNameElement.value.trim();
         let regexLastName = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,50}$");
         let validationLastName = regexLastName.test(lastName);
+        const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+        lastNameErrorMsg.innerText = "";
         if (validationLastName === false) {
-            const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-            lastNameErrorMsg.innerText = "Le champ n\'a pas le format attendu."
+            lastNameErrorMsg.innerText = "Le champ n\'a pas le format attendu (uniquement des lettres)."
         }
 
         //Champ adresse
         const addressElement = document.getElementById("address");
         let address = addressElement.value.trim();
-        let regexAddress = new RegExp("[0-9]{0,3}[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,100}");   //OBLIGATION QU'IL Y AIT DES LETTRES
+        let regexAddress = new RegExp("[0-9]{0,3}[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,100}");
         let validationAddress = regexAddress.test(address);
+        const addressErrorMsg = document.getElementById("addressErrorMsg");
+        addressErrorMsg.innerText = "";
         if (validationAddress === false) {
-            const addressErrorMsg = document.getElementById("addressErrorMsg");
-            addressErrorMsg.innerText = "Le champ n\'a pas le format attendu."
+            addressErrorMsg.innerText = "Le champ n\'a pas le format attendu (Numéro + adresse)."
         }
 
         //Champ ville
@@ -43,9 +46,10 @@ export function verifyForm() {
         let city = cityElement.value.trim();
         let regexCity = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,50}$");
         let validationCity = regexCity.test(city);
+        const cityErrorMsg = document.getElementById("cityErrorMsg");
+        cityErrorMsg.innerText = "";
         if (validationCity === false) {
-            const cityErrorMsg = document.getElementById("cityErrorMsg");
-            cityErrorMsg.innerText = "Le champ n\'a pas le format attendu."
+            cityErrorMsg.innerText = "Le champ n\'a pas le format attendu (uniquement des lettres)."
         }
 
         //Champ email
@@ -53,13 +57,11 @@ export function verifyForm() {
         let email = emailElement.value.trim();
         let regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,10}")
         let validationEmail = regexEmail.test(email);
+        const emailErrorMsg = document.getElementById("emailErrorMsg");
+        emailErrorMsg.innerText = "";
         if (validationEmail === false) {
-            const emailErrorMsg = document.getElementById("emailErrorMsg");
-            emailErrorMsg.innerText = "Le champ n\'a pas le format attendu."
+            emailErrorMsg.innerText = "Le champ n\'a pas le format attendu (exemple@domaine.fr)."
         }
-        // } else {
-        //     firstNameErrorMsg.innerText = ""   NE FONCTIONNE PAS POUR EFFACER LE MESSAGE D'ERREUR
-        // }
 
         if (validationFirstName === true && validationLastName === true && validationAddress === true && validationCity === true && validationEmail === true) {
 
@@ -78,78 +80,3 @@ export function verifyForm() {
         console.log("Une erreur est survenue : " + error.message)
     }
 };
-
-// /**
-//  * Check the first name format in the form, send an error message if the format is incorrect
-//  * @param { HTMLElement } firstNameElement
-//  * @returns
-//  */
-// function checkFirstName(firstNameElement) {
-//     let firstName = firstNameElement.value.trim();
-//     let regexFirstName = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-]{2,15}$");
-//     let validationFirstName = regexFirstName.test(firstName);
-//     if (validationFirstName === false) {
-//         throw new Error(alert("Le champ Prénom n'a pas le format attendu."))
-//     }
-//     return
-// }
-
-// /**
-//  * Check the first name format in the form, send an error message if the format is incorrect
-//  * @param { HTMLElement } lastNameElement
-//  * @returns
-//  */
-// function checkLastName(lastNameElement) {
-//     let lastName = lastNameElement.value.trim();
-//     let regexLastName = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,50}$");
-//     let validationLastName = regexLastName.test(lastName);
-//     if (validationLastName === false) {
-//         throw new Error(alert("Le champ Nom n'a pas le format attendu."))
-//     }
-//     return
-// }
-
-// /**
-//  * Check the address format in the form, send an error message if the format is incorrect
-//  * @param { HTMLElement } addressElement
-//  * @returns
-//  */
-// function checkAddress(addressElement) {
-//     let address = addressElement.value.trim();
-//     let regexAddress = new RegExp("^[0-9a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,100}$");
-//     let validationAddress = regexAddress.test(address);
-//     if (validationAddress === false) {
-//         throw new Error(alert("Le champ Adresse n'a pas le format attendu."))
-//     }
-//     return
-// }
-
-// /**
-//  * Check the city format in the form, send an error message if the format is incorrect
-//  * @param { HTMLElement } cityElement
-//  * @returns
-//  */
-// function checkCity(cityElement) {
-//     let city = cityElement.value.trim();
-//     let regexCity = new RegExp("^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\\s]{2,50}$");
-//     let validationCity = regexCity.test(city);
-//     if (validationCity === false) {
-//         throw new Error(alert("Le champ Ville n'a pas le format attendu."))
-//     }
-//     return
-// }
-
-// /**
-//  * Check the email format in the form, send an error message if the format is incorrect
-//  * @param { HTMLElement } emailElement
-//  * @returns
-//  */
-// function checkEmail(emailElement) {
-//     let email = emailElement.value.trim();
-//     let regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,10}+")
-//     let validationEmail = regexEmail.test(email);
-//     if (validationEmail === false) {
-//         throw new Error(alert("Le champ Email n'a pas le format attendu."))
-//     }
-//     return
-// }

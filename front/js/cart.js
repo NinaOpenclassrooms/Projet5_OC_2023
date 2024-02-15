@@ -1,5 +1,5 @@
 //Importation des fonctions
-import { displayCartProduct } from "./modules/cartCreation.js";
+import { displayCartProduct } from "./modules/cartDisplay.js";
 import { verifyForm } from "./modules/form.js";
 
 //Récupération des éléments dans le localStorage et affichage des produits du panier
@@ -22,28 +22,30 @@ if (cartArray) {
     const totalPriceElement = document.getElementById("totalPrice");
     totalPriceElement.innerText = getSumPrice();
     const totalQuantityElement = document.getElementById("totalQuantity");
-    totalQuantityElement.innerText = getSumQuantity();
+    totalQuantityElement.innerText = getSumQuantity(cartArray);
 
+    //Création d'un tableau contenant les Id des produits commandés
+    let productIdList = [];
+
+    for (let element of cartArray) {
+        productIdList.push(element.idProduct);
+    }
+
+    //Ajout d'un eventListener au "Submit", Verification du formulaire, POST à l'API, effacement du local Storage et redirection vers la page de confirmation
     const orderElement = document.getElementById("order");
-    orderElement.addEventListener("click" || "keypress", (event) => verifyForm());
-
-
-
-    // //Création d'un tableau contenant les produits commandés           //UTILISER LE LOCAL STORAGE A LA PLACE
-    // let orderSummary = [];
-
-    // for (element of cartArray) {
-    //     orderSummary += element.productId;
-    // }
-    // console.log(orderSummary);
-
-    // //Envoi de l'objet clientContact et de l'array orderSummary à l'API, effacement du local Storage et redirection vers la page de confirmation
-    // if (getOrderId(clientContact, orderSummary)) {           //CLIENTCONTACT EST VIDE
-    //     console.log("Test")
-    //     // localStorage.removeItem("cart");
-    //     // document.location.href = `confirmation.html?orderId=${getOrderId(clientContact, orderSummary)}`;
-    // }
-
+    orderElement.addEventListener("click" || "keypress", (event) => {
+        let clientContact = verifyForm();
+        if (clientContact) {
+            getOrderId(clientContact, productIdList)
+                .then(orderId => {
+                    localStorage.removeItem("cart");
+                    document.location.href = `confirmation.html?orderId=${orderId}`;
+                })
+                .catch(() => {
+                    alert("Une erreur est survenue, le numéro de commande n'a pu être trouvé.")
+                })
+        }
+    });
 } else {
     alert("Le panier est vide");
     document.location.href = "../html/index.html";
@@ -67,46 +69,29 @@ function getSumPrice() {
     return sum;
 }
 
+
 /**
  * Get the total number of items
  * @returns { Integer } sum
  */
-function getSumQuantity() {
-    const quantityElementsList = document.querySelectorAll(".itemQuantity");
-
+function getSumQuantity(cartArray) {
     let sum = 0;
-
-    for (let element of quantityElementsList) {
-        sum += parseInt(element.value);
+    for (let element of cartArray) {
+        sum += parseInt(element.quantityProduct);
     }
-    return sum
+    return sum;
 }
-
-// function getSumPrice(cartArray, product) {   //MIEUX DU LOCAL STORAGE
-//     let sum = 0;
-//     let element = {};
-//     for (element of cartArray) {
-//         sum += product.price * element.quantityProduct;
-//     }
-//     return sum;
-// }
-
-// function getSumQuantity(cartArray) {
-//     let sum = 0;
-//     let element = {};
-//     for (element of cartArray) {
-//         sum += parseInt(element.quantityProduct);
-//     }
-//     return sum;
-// }
 
 /**
  * Send request using fetch api and return order number
  * @param { Object } clientContact 
- * @param { Array } orderSummary 
- * @returns { Promise } orderId
+ * @param { Array } productIdList
+ * @returns { Promise } orderArray.orderId
  */
-async function getOrderId(clientContact, orderSummary) {
+async function getOrderId(clientContact, productIdList) {
+    if (clientContact === null) {
+        return
+    }
     try {
         let response = await fetch("http://localhost:3000/api/products/order", {
             method: "POST",
@@ -115,14 +100,12 @@ async function getOrderId(clientContact, orderSummary) {
             },
             body: JSON.stringify({
                 contact: clientContact,
-                products: orderSummary
+                products: productIdList
             })
         });
-        let orderId = await response.json();
+        let orderArray = await response.json();
 
-        console.log(orderId);
-
-        return orderId
+        return orderArray.orderId
     }
     catch (error) {
         console.log(error);

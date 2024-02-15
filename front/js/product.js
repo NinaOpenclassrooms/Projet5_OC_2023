@@ -1,3 +1,10 @@
+//Importation des fonctions
+import { displayProduct } from "./modules/productDisplay.js";
+
+getProduct()
+
+const addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener("click", addToCart);
 
 /**
  * Send request using fetch api to get the object product
@@ -12,10 +19,11 @@ async function getProduct() {
     }
     catch (error) {
         console.log(error);
+        alert("Le produit n'existe pas.");
+        document.location.href = "../html/index.html";
         return;
     }
 }
-getProduct()
 
 /**
  * Get the product's id in the url of the page
@@ -28,49 +36,6 @@ function getId() {
 
     return id;
 }
-
-/**
- * Display the product (image, name, description, price, color choices)
- * @param { Object } product 
- */
-async function displayProduct(product) {
-    //Title
-    document.title = product.name;
-
-    //Logo
-    const sectionLogo = document.querySelector(".item__img");
-    const imageElement = document.createElement("img");
-    imageElement.src = product.imageUrl;
-    imageElement.alt = product.altTxt;
-
-    sectionLogo.appendChild(imageElement);
-
-    //Nom et prix
-    const nameElement = document.getElementById("title");
-    nameElement.innerText = product.name;
-    const priceElement = document.getElementById("price");
-    priceElement.innerText = product.price;
-
-    //Description
-    const descriptionElement = document.getElementById("description");
-    descriptionElement.innerText = product.description;
-
-    //Options de couleurs
-    const sectionColors = document.getElementById("colors");
-
-    for (color of product.colors) {
-
-        const colorElement = document.createElement("option");
-        colorElement.value = color;
-        colorElement.innerText = color;
-
-        sectionColors.appendChild(colorElement);
-    }
-}
-
-
-const addToCartBtn = document.getElementById("addToCart");
-addToCartBtn.addEventListener("click", addToCart);
 
 /**
  * Add the products to the cart by using the local Storage
@@ -88,14 +53,12 @@ function addToCart() {
         return;
     }
 
-    console.log(cartObject);
-
     let cartArray = localStorage.getItem("cart");
     if (cartArray) {
         cartArray = JSON.parse(cartArray);
         let findProduct = false;
 
-        for (product of cartArray) {
+        for (let product of cartArray) {
             if (product.idProduct === cartObject.idProduct && product.colorProduct === cartObject.colorProduct) {
                 findProduct = true;
                 product.quantityProduct += cartObject.quantityProduct;
@@ -121,7 +84,7 @@ function addToCart() {
  */
 function getQuantity() {
     const quantityElement = document.getElementById("quantity");
-    const quantity = parseInt(quantityElement.value);  //VERIF SI IL FAUT PARSEINT
+    const quantity = parseInt(quantityElement.value);
     return quantity;
 }
 

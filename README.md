@@ -1,6 +1,8 @@
 # Kanap #
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+This is the front end and back end server for Project 5 of Openclassrooms Web Developer path.
+
+This fifth project consists of the development of an e-shop in pure Javascript with provided HTML/CSS for the company Kanap.
 
 ### Back end Prerequisites ###
 
