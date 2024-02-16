@@ -83,12 +83,6 @@ export async function displayCartProduct(product, element) {
 
     cartSettingsElement.appendChild(cartSettingsDeleteElement);
     cartSettingsDeleteElement.appendChild(deleteParagraphElement);
-
-    //Création du prix total des produits et du nombre de produits
-    const totalPriceElement = document.getElementById("totalPrice");
-    totalPriceElement.innerText = getSumPrice();
-    const totalQuantityElement = document.getElementById("totalQuantity");
-    totalQuantityElement.innerText = getSumQuantity(cartArray);
 }
 
 /**
