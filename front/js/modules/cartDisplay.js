@@ -127,7 +127,7 @@ function deleteProductCart(event) {
 
 /**
  * Modify the quantity when the quantity input is changed
- * @param {*} event 
+ * @param { Object } event 
  * @returns if the local Storage is empty
  */
 function modifyQuantityCart(event) {
