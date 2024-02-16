@@ -3,6 +3,7 @@ import { displayProduct } from "./modules/productDisplay.js";
 
 getProduct()
 
+//Ajout d'un listener pour mettre le produit dans le panier
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
 
@@ -16,6 +17,11 @@ async function getProduct() {
         const product = await response.json();
 
         displayProduct(product);
+
+        //Message d'erreur si la réponse de l'API est un échec
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
     }
     catch (error) {
         console.log(error);
@@ -69,7 +75,6 @@ function addToCart() {
             cartArray.push(cartObject);
         }
     } else {
-
         cartArray = [];
         cartArray.push(cartObject);
     }
