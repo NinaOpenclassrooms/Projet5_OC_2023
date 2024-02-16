@@ -83,6 +83,12 @@ export async function displayCartProduct(product, element) {
 
     cartSettingsElement.appendChild(cartSettingsDeleteElement);
     cartSettingsDeleteElement.appendChild(deleteParagraphElement);
+
+    //Création du prix total des produits et du nombre de produits
+    const totalPriceElement = document.getElementById("totalPrice");
+    totalPriceElement.innerText = getSumPrice();
+    const totalQuantityElement = document.getElementById("totalQuantity");
+    totalQuantityElement.innerText = getSumQuantity(cartArray);
 }
 
 /**
@@ -159,6 +165,7 @@ function modifyQuantityCart(event) {
         if (id === product.idProduct && color === product.colorProduct) {
             product.quantityProduct = newquantity;
             alert("La quantité a été mise à jour.");
+            window.location.reload();
         }
         localStorage.setItem("cart", JSON.stringify(cartArray));
     }
@@ -171,7 +178,7 @@ function modifyQuantityCart(event) {
  */
 function verifyCartQuantity(quantity) {
 
-    if (quantity >= 100) {
+    if (quantity > 100) {
         alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
         return false;
     }

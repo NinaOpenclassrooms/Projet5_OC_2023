@@ -104,7 +104,7 @@ function getColor() {
  * @returns boolean
  */
 function verifyQuantity(quantity) {
-    if (quantity < 1 || quantity >= 100) {
+    if (quantity < 1 || quantity > 100) {
         console.log("Erreur quantité");
         alert("La quantité choisie n'est pas conforme. Choisissez une quantité comprise entre 1 et 100.");
         return false;

@@ -2,7 +2,7 @@
  * Display the product (image, name, short description)
  * @param { Object } product 
  */
-export async function displayProduct(product) {
+export function displayProduct(product) {
 
     //Récupération de l'élément du DOM qui accueillera les produits
     const sectionItems = document.querySelector(".items");
